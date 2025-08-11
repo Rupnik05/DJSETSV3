@@ -45,15 +45,13 @@
     .btn.primary:hover{border-color:color-mix(in oklab, var(--accent) 65%, transparent)}
     dialog{border:0; padding:0; border-radius:16px; max-width:min(980px, 96vw); background:#0b0d13; box-shadow:0 15px 60px rgba(0,0,0,.6)}
     dialog::backdrop{background:rgba(0,0,0,.65)}
-    .modal-head{display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border-bottom:1px solid #1b2230}
+    .modal-head{display:flex; align-items:center; gap:8px; justify-content:space-between; padding:8px 10px; border-bottom:1px solid #1b2230}
     .modal-title{font-size:14px; color:var(--muted)}
+    .modal-actions{display:flex; gap:8px; align-items:center}
+    .openyt{font-size:12px; color:var(--text); opacity:.8; text-decoration:none; border:1px solid #2b3441; padding:6px 9px; border-radius:8px}
+    .openyt:hover{opacity:1; border-color:#3a4a60}
     .close{background:transparent; border:1px solid #2b3441; color:var(--text); border-radius:8px; padding:6px 9px; cursor:pointer}
     .player{width:min(960px, 96vw); aspect-ratio:16/9; display:block}
-    footer{margin-top:28px; color:var(--muted); font-size:12px; text-align:center}
-    .empty{opacity:.7; text-align:center; padding:28px}
-    .brand-rail{position:fixed; left:10px; top:0; bottom:0; display:flex; align-items:center; z-index:0; opacity:.12}
-    .brand-rail span{writing-mode:vertical-rl; transform:rotate(180deg); font-weight:800; letter-spacing:.1em; color:var(--accent-2); font-size:48px}
-    @media (max-width:420px){ h1{font-size:24px} .pfp img{width:56px; height:56px} .brand-rail{display:none} }
   </style>
 </head>
 <body class="grain">
@@ -113,26 +111,26 @@
       document.getElementById('tagline').textContent = PROFILE.tagline;
       document.getElementById('igLink').href = PROFILE.instagram;
 
-      // Allow changing avatar (persists to localStorage)
-      const fileInput = document.getElementById('avatarFile');
-      avatar.addEventListener('click', ()=> fileInput.click());
-      fileInput.addEventListener('change', (e)=>{
-        const f = e.target.files && e.target.files[0];
-        if(!f) return; const r=new FileReader();
-        r.onload = () => { localStorage.setItem('pc_avatar', r.result); avatar.src = r.result; };
-        r.readAsDataURL(f);
-      });
-
       // Build items
       const grid = document.querySelector('.grid');
       const items = SETS.map((s)=>{ const id=ytIdFromUrl(s.url); return { ...s, youtubeId:id, kind: id? 'video':'link', startAt: startSecondsFromUrl(s.url) }; });
 
       function openPlayer(i){
-        if(!i.youtubeId){ window.open(i.url,'_blank'); return; }
-        const d=document.getElementById('modal'); const iframe=document.getElementById('player');
+        const d=document.getElementById('modal');
+        const iframe=document.getElementById('player');
+        const openYt=document.getElementById('openOnYT');
         document.getElementById('modalTitle').textContent = i.title || 'Now playing…';
-        const start = i.startAt && i.startAt>0 ? `&start=${i.startAt}` : '';
-        iframe.src = `https://www.youtube.com/embed/${i.youtubeId}?autoplay=1${start}`;
+        openYt.href = i.url; // fallback link always available
+
+        if(!i.youtubeId){ window.open(i.url,'_blank'); return; }
+        const params = new URLSearchParams({
+          start: i.startAt || 0,
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+          // no autoplay to avoid bot/CAPTCHA prompts
+        });
+        iframe.src = `https://www.youtube-nocookie.com/embed/${i.youtubeId}?${params.toString()}`;
         d.showModal();
       }
 
@@ -159,9 +157,9 @@
           const bd=document.createElement('span'); bd.className='badge'; bd.textContent = i.youtubeId? 'YouTube':'Link'; top.appendChild(bd);
 
           const ct=document.createElement('div'); ct.className='content';
-          ct.innerHTML = `<h3 class=\"title\">${i.title || 'Loading title…'}</h3>
-                          <div class=\"meta\">${i.author || ''}${i.tags && i.tags.length ? ` • ${i.tags.join(' · ')}`:''}</div>
-                          <div class=\"buttons\"><a class=\"btn primary\" href=\"javascript:void(0)\">Play</a><a class=\"btn\" href=\"${i.url}\" target=\"_blank\" rel=\"noopener\">Open</a></div>`;
+          ct.innerHTML = `<h3 class="title">${i.title || 'Loading title…'}</h3>
+                          <div class="meta">${i.author || ''}${i.tags && i.tags.length ? ` • ${i.tags.join(' · ')}`:''}</div>
+                          <div class="buttons"><a class="btn primary" href="javascript:void(0)">Play</a><a class="btn" href="${i.url}" target="_blank" rel="noopener">Open</a></div>`;
           ct.querySelector('.btn.primary').onclick = () => openPlayer(i);
 
           card.appendChild(top); card.appendChild(ct); grid.appendChild(card);
@@ -204,14 +202,20 @@
           Follow
         </a>
       </div>
-      <input id="avatarFile" type="file" accept="image/*" hidden />
     </header>
 
     <section class="grid" aria-live="polite"></section>
-
-    <!-- Footer removed by request -->
   </div>
 
-  <dialog id="modal"><div class="modal-head"><div id="modalTitle" class="modal-title">Now playing…</div><button id="close" class="close">Close</button></div><iframe id="player" class="player" src="" title="YouTube player" allow="autoplay; encrypted-media" allowfullscreen></iframe></dialog>
+  <dialog id="modal">
+    <div class="modal-head">
+      <div id="modalTitle" class="modal-title">Now playing…</div>
+      <div class="modal-actions">
+        <a id="openOnYT" class="openyt" href="#" target="_blank" rel="noopener">Open on YouTube ↗</a>
+        <button id="close" class="close">Close</button>
+      </div>
+    </div>
+    <iframe id="player" class="player" src="" title="YouTube player" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="no-referrer"></iframe>
+  </dialog>
 </body>
 </html>
