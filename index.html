@@ -7,56 +7,54 @@
   <meta name="description" content="Curated DJ sets by planetcircle__" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%234676B6'/%3E%3Ccircle cx='50' cy='50' r='26' fill='%23E6E7DB'/%3E%3C/svg%3E">
   <style>
-    :root{ --radius:18px; --text:#E6E7DB; --muted:#98ACC0; --bg-1:#141A21; --bg-2:#222B32; --accent:#4676B6; --accent-2:#DCDDCF; --ring:rgba(70,118,182,.28); }
+    :root{
+      --radius:18px;
+      --blue:#4676B6;        /* page bg */
+      --text:#E6E7DB;        /* global text on blue */
+      --surface:#ffffff;     /* card surface */
+      --surface-2:#F7F9FC;   /* subtle gradient end */
+      --ink:#0E1114;         /* text on white */
+      --ink-muted:#5D6A78;   /* meta text on white */
+      --border:rgba(13,19,27,.14);
+    }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0; font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1200px 800px at 18% -15%, color-mix(in oklab, var(--accent) 26%, transparent), transparent),
-                  radial-gradient(1200px 800px at 105% 15%, color-mix(in oklab, var(--accent-2) 32%, transparent), transparent),
-                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
-      color:var(--text); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility }
-    .wrap{max-width:1000px; margin:0 auto; padding:28px 16px 72px; position:relative}
-    .grain::before{content:""; position:fixed; inset:-10vmax; pointer-events:none; opacity:.12; mix-blend-mode:overlay; background-image:repeating-radial-gradient(circle at 0 0, rgba(255,255,255,.05) 0, rgba(255,255,255,.05) 1px, transparent 1px, transparent 2px); filter:contrast(110%)}
+    body{margin:0; font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; background:#4676B6; color:var(--text); -webkit-font-smoothing:antialiased}
+    .wrap{max-width:1000px; margin:0 auto; padding:28px 16px 72px}
+
     header{display:flex; align-items:center; gap:14px; margin-bottom:12px}
     .pfp{position:relative}
-    .pfp img{width:64px; height:64px; border-radius:50%; border:2px solid var(--accent); cursor:pointer}
-    .ring{position:absolute; inset:-8px; border-radius:999px; background:conic-gradient(from 0deg, var(--accent), var(--muted), var(--accent)); filter:blur(10px); opacity:.35}
+    .pfp img{width:64px; height:64px; border-radius:50%; border:2px solid #fff}
+    .ring{position:absolute; inset:-8px; border-radius:999px; background:conic-gradient(from 0deg,#fff3,#0000,#fff3); filter:blur(10px); opacity:.35}
     .titles{line-height:1.05}
     h1{font-size:28px; margin:0}
-    .tagline{color:var(--muted); font-size:14px}
+    .tagline{opacity:.92}
 
     .cta{display:flex; gap:10px; align-items:center; margin-left:auto}
-    .link{display:inline-flex; gap:8px; align-items:center; padding:10px 12px; border-radius:12px; text-decoration:none; color:var(--text); background:linear-gradient(180deg,#111723,#0e1118); border:1px solid #2b3441}
-    .link:hover{border-color:#354359}
+    .link{display:inline-flex; gap:8px; align-items:center; padding:10px 12px; border-radius:12px; text-decoration:none; color:#fff; background:linear-gradient(180deg,rgba(0,0,0,.22),rgba(0,0,0,.32)); border:1px solid #ffffff33}
+    .link:hover{border-color:#ffffff66}
 
     .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin-top:14px}
-    .card{background:linear-gradient(180deg,#10141c 0%, #0f1116 100%); border:1px solid #1b2230; border-radius:var(--radius); overflow:hidden; position:relative}
-    .thumb-wrap{aspect-ratio:16/9; background:#0b0c11; position:relative}
-    .thumb{width:100%; height:100%; object-fit:cover; display:block; filter:saturate(1.0) contrast(1.02)}
-    .duration{position:absolute; right:8px; bottom:8px; background:rgba(0,0,0,.55); padding:4px 6px; font-size:12px; border-radius:6px}
-    .badge{position:absolute; left:8px; top:8px; background:color-mix(in oklab, var(--accent) 16%, transparent); color:var(--accent); border:1px solid color-mix(in oklab, var(--accent) 45%, transparent); padding:4px 8px; font-size:11px; border-radius:999px}
-    .content{padding:12px}
-    .title{font-size:15px; margin:0 0 6px; line-height:1.3}
-    .meta{font-size:12px; color:var(--muted)}
+    .card{background:linear-gradient(180deg,var(--surface),var(--surface-2)); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; position:relative; box-shadow:0 6px 20px rgba(0,0,0,.12)}
+    .thumb-wrap{aspect-ratio:16/9; background:#E9EEF5; position:relative}
+    .thumb{width:100%; height:100%; object-fit:cover; display:block}
+    .badge{position:absolute; left:8px; top:8px; background:#EAF1FB; color:#244E8E; border:1px solid rgba(70,118,182,.35); padding:4px 8px; font-size:11px; border-radius:999px}
+    .duration{position:absolute; right:8px; bottom:8px; background:rgba(0,0,0,.55); color:#fff; padding:4px 6px; font-size:12px; border-radius:6px}
+    .content{padding:12px; color:var(--ink)}
+    .title{font-size:15px; margin:0 0 6px; line-height:1.3; color:var(--ink)}
+    .meta{font-size:12px; color:var(--ink-muted)}
     .buttons{display:flex; gap:8px; margin-top:10px}
-    .btn{flex:1; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 12px; border-radius:10px; background:#151b24; border:1px solid #283244; cursor:pointer; color:var(--text); text-decoration:none}
-    .btn:hover{border-color:#33415a}
-    .btn.primary{background:linear-gradient(180deg, color-mix(in oklab, var(--accent) 10%, #0e141a), color-mix(in oklab, var(--accent) 18%, #0b1217)); border-color:color-mix(in oklab, var(--accent) 45%, transparent)}
-    .btn.primary:hover{border-color:color-mix(in oklab, var(--accent) 65%, transparent)}
-    dialog{border:0; padding:0; border-radius:16px; max-width:min(980px, 96vw); background:#0b0d13; box-shadow:0 15px 60px rgba(0,0,0,.6)}
-    dialog::backdrop{background:rgba(0,0,0,.65)}
-    .modal-head{display:flex; align-items:center; gap:8px; justify-content:space-between; padding:8px 10px; border-bottom:1px solid #1b2230}
-    .modal-title{font-size:14px; color:var(--muted)}
-    .modal-actions{display:flex; gap:8px; align-items:center}
-    .openyt{font-size:12px; color:var(--text); opacity:.8; text-decoration:none; border:1px solid #2b3441; padding:6px 9px; border-radius:8px}
-    .openyt:hover{opacity:1; border-color:#3a4a60}
-    .close{background:transparent; border:1px solid #2b3441; color:var(--text); border-radius:8px; padding:6px 9px; cursor:pointer}
-    .player{width:min(960px, 96vw); aspect-ratio:16/9; display:block}
+    .btn{flex:1; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 12px; border-radius:10px; background:var(--blue); border:1px solid rgba(70,118,182,.6); color:#fff; text-decoration:none}
+    .btn:hover{filter:brightness(1.05)}
+
+    .brand-rail{position:fixed; left:10px; top:0; bottom:0; display:flex; align-items:center; z-index:0; opacity:.18}
+    .brand-rail span{writing-mode:vertical-rl; transform:rotate(180deg); font-weight:800; letter-spacing:.1em; color:#fff; font-size:48px}
+    @media (max-width:420px){ h1{font-size:24px} .pfp img{width:56px; height:56px} .brand-rail{display:none} }
   </style>
 </head>
-<body class="grain">
+<body>
   <script>
-    // --- Config ---
+    // --- Config (opens YouTube directly) ---
     const PROFILE = {
       avatarUrl: "https://raw.githubusercontent.com/Rupnik05/DJSETSV3/main/profile.jpeg",
       avatarAltUrl: "https://raw.githubusercontent.com/Rupnik05/DJSETSV3/a458aea3f57915ee0db19917c6d81f52199edf4c/profile.jpeg",
@@ -75,7 +73,6 @@
 
     // --- Helpers ---
     const ytIdFromUrl = (u) => { try{ const url = new URL(u); if(url.hostname.includes('youtu.be')) return url.pathname.replace('/',''); if(url.searchParams.get('v')) return url.searchParams.get('v'); const p=url.pathname.split('/').filter(Boolean); if(p[0]==='shorts'&&p[1]) return p[1]; if(p[0]==='embed'&&p[1]) return p[1]; return null; }catch(_){ return null } };
-    const startSecondsFromUrl = (u)=>{ try{ const url=new URL(u); const t=url.searchParams.get('t')||url.searchParams.get('start'); if(!t) return 0; if(/^\d+$/.test(t)) return parseInt(t,10); const m=t.match(/(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/i); if(!m) return 0; return (parseInt(m[1]||'0')*3600)+(parseInt(m[2]||'0')*60)+parseInt(m[3]||'0'); }catch(_){return 0} };
     const thumbCandidates = (id)=>[
       `https://i.ytimg.com/vi_webp/${id}/maxresdefault.webp`,
       `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`,
@@ -94,9 +91,8 @@
     const placeholderThumb = (label='') => {
       const text = initials(label)||'PC';
       const svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 90'>"
-        +"<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#4676B6'/><stop offset='100%' stop-color='#222B32'/></linearGradient></defs>"
-        +"<rect width='160' height='90' rx='12' fill='url(#g)'/>"
-        +"<text x='50%' y='55%' text-anchor='middle' font-family='system-ui,-apple-system,Segoe UI,Roboto' font-size='36' fill='#E6E7DB' font-weight='800' letter-spacing='2'>"+text+"</text></svg>";
+        +"<rect width='160' height='90' rx='12' fill='%23E9EEF5'/>"
+        +"<text x='50%' y='55%' text-anchor='middle' font-family='system-ui,-apple-system,Segoe UI,Roboto' font-size='36' fill='%230E1114' font-weight='800' letter-spacing='2'>"+text+"</text></svg>";
       return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
     };
 
@@ -111,38 +107,16 @@
       document.getElementById('tagline').textContent = PROFILE.tagline;
       document.getElementById('igLink').href = PROFILE.instagram;
 
-      // Build items
       const grid = document.querySelector('.grid');
-      const items = SETS.map((s)=>{ const id=ytIdFromUrl(s.url); return { ...s, youtubeId:id, kind: id? 'video':'link', startAt: startSecondsFromUrl(s.url) }; });
-
-      function openPlayer(i){
-        const d=document.getElementById('modal');
-        const iframe=document.getElementById('player');
-        const openYt=document.getElementById('openOnYT');
-        document.getElementById('modalTitle').textContent = i.title || 'Now playing…';
-        openYt.href = i.url; // fallback link always available
-
-        if(!i.youtubeId){ window.open(i.url,'_blank'); return; }
-        const params = new URLSearchParams({
-          start: i.startAt || 0,
-          rel: 0,
-          modestbranding: 1,
-          playsinline: 1
-          // no autoplay to avoid bot/CAPTCHA prompts
-        });
-        iframe.src = `https://www.youtube-nocookie.com/embed/${i.youtubeId}?${params.toString()}`;
-        d.showModal();
-      }
+      const items = SETS.map((s)=>{ const id=ytIdFromUrl(s.url); return { ...s, youtubeId:id, kind: id? 'video':'link' }; });
 
       function makeThumb(i){
         const img=document.createElement('img');
         img.className='thumb'; img.loading='lazy'; img.alt='Thumbnail'; img.setAttribute('referrerpolicy','no-referrer');
         if(!i.youtubeId){ img.src = placeholderThumb(i.author || i.title || ''); return img; }
         const candidates = (i.thumb ? [i.thumb, ...thumbCandidates(i.youtubeId)] : thumbCandidates(i.youtubeId));
-        let k = 0;
-        const tryNext = () => { if(k < candidates.length){ img.src = candidates[k++]; } else { img.onerror = null; img.onload = null; } };
-        img.onerror = tryNext;
-        img.onload = () => { if(img.naturalWidth && img.naturalWidth <= 160 && k < candidates.length){ tryNext(); } };
+        let k = 0; const tryNext = ()=>{ if(k < candidates.length){ img.src = candidates[k++]; } else { img.onerror=null; img.onload=null; } };
+        img.onerror = tryNext; img.onload = ()=>{ if(img.naturalWidth && img.naturalWidth <= 160 && k < candidates.length){ tryNext(); } };
         tryNext();
         return img;
       }
@@ -153,37 +127,30 @@
           const card=document.createElement('article'); card.className='card';
           const top=document.createElement('div'); top.className='thumb-wrap';
           top.appendChild(makeThumb(i));
-          if(i.duration){ const du=document.createElement('span'); du.className='duration'; du.textContent=i.duration; top.appendChild(du); }
           const bd=document.createElement('span'); bd.className='badge'; bd.textContent = i.youtubeId? 'YouTube':'Link'; top.appendChild(bd);
 
           const ct=document.createElement('div'); ct.className='content';
           ct.innerHTML = `<h3 class="title">${i.title || 'Loading title…'}</h3>
                           <div class="meta">${i.author || ''}${i.tags && i.tags.length ? ` • ${i.tags.join(' · ')}`:''}</div>
-                          <div class="buttons"><a class="btn primary" href="javascript:void(0)">Play</a><a class="btn" href="${i.url}" target="_blank" rel="noopener">Open</a></div>`;
-          ct.querySelector('.btn.primary').onclick = () => openPlayer(i);
+                          <div class="buttons">
+                            <a class="btn" href="${i.url}" target="_blank" rel="noopener">Open</a>
+                          </div>`;
 
           card.appendChild(top); card.appendChild(ct); grid.appendChild(card);
         });
       }
 
-      // oEmbed: fill titles + reliable thumbs from YouTube
+      // oEmbed titles + official thumbs
       const pending = [];
       items.forEach((i)=>{
         if(i.youtubeId){
           const oembed = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${i.youtubeId}&format=json`;
-          pending.push(
-            fetch(oembed).then(r=>r.json()).then(d=>{
-              if(!i.title || i.title==='auto') i.title = d.title;
-              if(d.thumbnail_url) i.thumb = d.thumbnail_url; // prefer official
-            }).catch(()=>{})
-          );
+          pending.push(fetch(oembed).then(r=>r.json()).then(d=>{ if(!i.title||i.title==='auto') i.title=d.title; if(d.thumbnail_url) i.thumb=d.thumbnail_url; }).catch(()=>{}));
         }
       });
 
       render();
       if(pending.length){ Promise.allSettled(pending).then(render); }
-
-      document.getElementById('close').onclick = () => { const d=document.getElementById('modal'); document.getElementById('player').src=''; d.close(); };
     });
   </script>
 
@@ -206,16 +173,5 @@
 
     <section class="grid" aria-live="polite"></section>
   </div>
-
-  <dialog id="modal">
-    <div class="modal-head">
-      <div id="modalTitle" class="modal-title">Now playing…</div>
-      <div class="modal-actions">
-        <a id="openOnYT" class="openyt" href="#" target="_blank" rel="noopener">Open on YouTube ↗</a>
-        <button id="close" class="close">Close</button>
-      </div>
-    </div>
-    <iframe id="player" class="player" src="" title="YouTube player" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="no-referrer"></iframe>
-  </dialog>
 </body>
 </html>
